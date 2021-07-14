@@ -98,7 +98,6 @@ def follower_constraint_value(act_user, time, load_matrix, operator_action=None,
     x = np.zeros((4 + 3 * act_user, time))
 
     for t in range(time):
-        i=t
         if t == 0:
             x[0, t] = - (q_min + beta_s * np.sum(x_s[:, t]) - beta_b * np.sum(x_b[:, t]))
             x[1, t] = - x[0, t] - q_max
@@ -127,7 +126,7 @@ def follower_constraints_derivative_matrix(act_user, time):
             x[0, t] = alpha * x[0, t-1]
             x[0, t, 0, t] = act_user * (beta_s * p_l - beta_b * (p_l + p_soh))
             x[0, t, 1, t] = act_user * (beta_s * (p_l + p_soh) - beta_b * p_l)
-            x[1, t] = - x[1, t]
+            x[1, t] = - x[0, t] #########
 
         x[2, t, 0, t] = - act_user * p_l
         x[2, t, 1, t] = - act_user * (p_l + p_soh)
@@ -225,8 +224,8 @@ def follower_action(act_user, time, operator_action, load_matrix):
     c1_mat = c1
     c2_mat = c2
 
-    p_s = operator_action[0]
-    p_b = operator_action[1]
+    p_s = operator_action[0].reshape(1, -1)
+    p_b = operator_action[1].reshape(1, -1)
     p_s_mat = p_s
     p_b_mat = p_b
     for i in range(act_user -1):
@@ -291,26 +290,26 @@ def step_size(act_user, time, load_matrix, operator_action, user_action, d, r):
     return 0, operator_action, user_action
 
 
-def iterations(act_user, t, load_matrix, operator_action):
+def iterations(act_user, time, load_matrix, operator_action):
 
     a_o = operator_action
-    result, x_s, x_b, l, taken_time = follower_action(act_user, t, a_o, load_matrix)
+    result, x_s, x_b, l, taken_time = follower_action(act_user, time, a_o, load_matrix)
 
     a_f = np.array([x_s, x_b, l])
 
     min_step_size = 1e-8
 
-    print(get_ec(act_user, t, load_matrix, a_o, a_f))
-    print(get_par(act_user, t, load_matrix, a_o, a_f))
+    print(get_ec(act_user, time, load_matrix, a_o, a_f))
+    print(get_par(act_user, time, load_matrix, a_o, a_f))
 
     for i in range(max_iter):
         print("ITER :", i)
         print("DIRECTION")
-        result, d, r, v, g = direction_finding(act_user, t, load_matrix, a_o, a_f)
+        result, d, r, v, g = direction_finding(act_user, time, load_matrix, a_o, a_f)
         print("d :", result)
-        print("r :", r)
+        #print("r :", r)
         print("STEP")
-        b, next_a_o, next_a_f = step_size(act_user, t, load_matrix, a_o, a_f, d, r)
+        b, next_a_o, next_a_f = step_size(act_user, time, load_matrix, a_o, a_f, d, r)
         if b != 0:
             print("s :", b)
             a_o = next_a_o
@@ -319,8 +318,8 @@ def iterations(act_user, t, load_matrix, operator_action):
             print("NO UPDATE")
             return a_o, a_f
 
-        print("EC  :", get_ec(act_user, t, load_matrix, a_o, a_f))
-        print("PAR :", get_par(act_user, t, load_matrix, a_o, a_f))
+        print("EC  :", get_ec(act_user, time, load_matrix, a_o, a_f))
+        print("PAR :", get_par(act_user, time, load_matrix, a_o, a_f))
         if b <= min_step_size:
             break
 
