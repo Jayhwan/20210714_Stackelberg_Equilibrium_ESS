@@ -22,7 +22,7 @@ def find_good_initial_point(act_user, t, load_matrix):
     best_ec_index=0
     best_par_index=0
     for i in range(max_scatter):
-        a_o = 3 * np.random.random((2, t))+1 * np.ones((2, t))
+        a_o = 3 * np.random.random((2, t))+0 * np.ones((2, t))
         a_o[0] = np.minimum(a_o[0], a_o[1])
         a_o[1] = np.maximum(a_o[0], a_o[1])
 

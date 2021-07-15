@@ -140,8 +140,8 @@ def direction_finding_indiv(act_user, time, load_matrix, operator_action, user_a
     # First constraint
     constraints += [cp.sum(cp.multiply(2*p_tax*act_user*p_s+2*p_l*act_user*load_total/(p_soh+2*p_l), r[0]))
                     + cp.sum(cp.multiply(2*p_tax*act_user*p_b+2*p_l*act_user*load_total/(p_soh+2*p_l), r[1]))
-                    + cp.sum(cp.multiply(2*p_l/(p_soh+2*p_l)*load_total, v[0]))
-                    - cp.sum(cp.multiply(2*p_l/(p_soh+2*p_l)*load_total, v[1])) <= d]
+                    + cp.sum(cp.multiply(2*act_user*p_l/(p_soh+2*p_l)*load_total, v[0]))
+                    - cp.sum(cp.multiply(2*act_user*p_l/(p_soh+2*p_l)*load_total, v[1])) <= d]
 
     # Second constraints
     for t in range(time):
