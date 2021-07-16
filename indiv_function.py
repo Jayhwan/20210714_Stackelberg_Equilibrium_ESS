@@ -78,7 +78,7 @@ def follower_action_indiv(act_user, time, operator_action, load_matrix):
 
     start = timer.time()
 
-    result = prob.solve(solver = 'ECOS')
+    result = prob.solve(solver='ECOS', max_iters=1000)
 
     end = timer.time()
     #print("# kkt #")
@@ -116,7 +116,7 @@ def follower_constraints_derivative_matrix_indiv(act_user, time):
             x[7*i+6, t, 0, t] = - p_soh
             x[7*i+6, t, 1, t] = p_soh
 
-    x = x/(p_soh*p_soh*(p_soh+2*p_l))
+    x = x/(p_soh*(p_soh+2*p_l))
     return x
 
 
@@ -171,7 +171,7 @@ def direction_finding_indiv(act_user, time, load_matrix, operator_action, user_a
     constraints += [cp.sum(cp.power(r, 2)) <= 1]
 
     prob = cp.Problem(cp.Minimize(objective), constraints)
-    result = prob.solve(solver='ECOS')
+    result = prob.solve(solver='ECOS', max_iters=1000)
 
     return result, d.value, r.value, v.value, g.value
 

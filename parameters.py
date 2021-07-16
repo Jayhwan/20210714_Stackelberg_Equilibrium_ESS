@@ -4,21 +4,21 @@ import time as timer
 import matplotlib.pyplot as plt
 
 total_user = 100
-time_step = 24
+time_step = 12
 max_iter = 10000
 alpha = 0.9956
 beta_s = 0.99
 beta_b = 1.01
 
-p_soh = 1
+p_soh = 0.01
 p_l = 1
 
-p_tax = 0.00001
+p_tax = 0.0001
 
-q_max = 1000.
+q_max = 10000.
 q_min = 0.
 
-c_max = 100.
-c_min = 100.
+c_max = 1000.
+c_min = 1000.
 
-epsilon = 5e-4
+epsilon = 5e-5

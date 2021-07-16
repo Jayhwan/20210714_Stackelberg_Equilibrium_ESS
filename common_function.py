@@ -141,7 +141,7 @@ def follower_constraints_derivative_matrix(act_user, time):
             x[4 + 3 * i + 2, t, 0, t] = - p_soh
             x[4 + 3 * i + 2, t, 1, t] = p_soh
 
-    return x/(p_soh*p_soh*(p_soh+2*p_l))
+    return x/(p_soh*(p_soh+2*p_l))
 
 
 def almost_same(a, b):
@@ -204,7 +204,7 @@ def direction_finding(act_user, time, load_matrix, operator_action, user_action)
     constraints += [cp.sum(cp.power(r, 2)) <= 1]
 
     prob = cp.Problem(cp.Minimize(objective), constraints)
-    result = prob.solve(solver='ECOS')
+    result = prob.solve(solver='ECOS', max_iters=1000)
 
     return result, d.value, r.value, v.value, g.value
 
@@ -260,7 +260,7 @@ def follower_action(act_user, time, operator_action, load_matrix):
 
     start = timer.time()
 
-    result = prob.solve(solver='ECOS')
+    result = prob.solve(solver='ECOS', max_iters=1000)
 
     end = timer.time()
 
