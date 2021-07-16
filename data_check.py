@@ -30,9 +30,9 @@ plt.show()
 
 #a_o, a_f = iterations_indiv(20, time_step, load, a_o)
 
-for i in range(51):
+for i in range(0):
     exps = []
-    np.save("exp_shared_identical_price_"+str(i)+".npy", exps)
-    np.save("exp_individual_identical_price_"+str(i)+".npy", exps)
-    np.save("exp_shared_random_identical_price_"+str(i)+".npy", exps)
+    #np.save("exp_shared_identical_price_"+str(i)+".npy", exps)
+    #np.save("exp_individual_identical_price_"+str(i)+".npy", exps)
+    #np.save("exp_shared_random_identical_price_"+str(i)+".npy", exps)
 

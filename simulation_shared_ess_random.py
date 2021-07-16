@@ -1,7 +1,7 @@
 from common_function import *
 
 load = np.load("two_type_load.npy", allow_pickle=True)
-
+load = load[:total_user, :time_step]
 a_o_init = np.ones((2, total_user, time_step))
 
 for i in range(50):
@@ -15,11 +15,18 @@ for i in range(50):
             a_o = None
             a_f = None
         else:
-            a_o = 1 * np.random.random((2, time_step))+ 0.5 * np.ones((2, time_step))
-            tmp = np.minimum(a_o[0], a_o[1])
-            a_o[1] = np.maximum(a_o[0], a_o[1])
-            a_o[0] = tmp
-            a_f
-            a_o, a_f = iterations(i, time_step, load[:total_user, :time_step], a_o)
+            while True:
+                a_o = 1 * np.random.random((2, time_step))+ 0.5 * np.ones((2, time_step))
+                tmp = np.minimum(a_o[0], a_o[1])
+                a_o[1] = np.maximum(a_o[0], a_o[1])
+                a_o[0] = tmp
+
+                result, x_s, x_b, l, taken_time = follower_action(i, time_step, a_o, load)
+                if result == - np.inf:
+                    print("fail")
+                    continue
+                else:
+                    break
+            a_f = np.array([x_s, x_b, l])
             x += [[a_o, a_f, load[:total_user, :time_step]]]
         np.save("exp_shared_random_identical_price_"+str(i)+".npy", x)
