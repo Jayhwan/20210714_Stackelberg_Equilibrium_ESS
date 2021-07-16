@@ -97,7 +97,7 @@ def follower_constraints_derivative_matrix_indiv(act_user, time):
             if t == 0:
                 x[7*i, t, 0, t] = beta_s * p_l - beta_b * (p_l + p_soh)
                 x[7*i, t, 1, t] = beta_s * (p_l + p_soh) - beta_b * p_l
-                x[7*i+1, t] = - x[7*i][i]
+                x[7*i+1, t] = - x[7*i, t]
             else:
                 x[7*i, t] = alpha * x[7*i, t-1]
                 x[7*i, t, 0, t] = beta_s * p_l - beta_b * (p_l + p_soh)
